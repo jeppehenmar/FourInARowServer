@@ -1,10 +1,12 @@
 package senders;
 
+import models.Board;
 import models.User;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.List;
 
 /**
  * Created by Jeppe Henmar on 21-11-2017.
@@ -30,6 +32,20 @@ public class Sender {
             DatagramPacket packet = new DatagramPacket(data, data.length, user.getIp(), user.getPort());
             socket.send(packet);
         } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void sendBoard(DatagramSocket socket, List<User> userList, Board board) {
+        try{
+            String boardMSG = board.printBoard();
+            byte[] data = boardMSG.getBytes();
+
+            for(User u : userList) {
+                DatagramPacket packet = new DatagramPacket(data, data.length, u.getIp(), u.getPort());
+                socket.send(packet);
+            }
+        }catch (IOException e){
             e.printStackTrace();
         }
     }

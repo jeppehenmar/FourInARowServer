@@ -47,6 +47,7 @@ public class Main {
                             if(userList.size()==2){
                                 board.resetBoard();
                                 System.out.println(board.printBoard());
+                                controller.sendBoard(socket, userList, board);
                                 break;
                             }
                         }

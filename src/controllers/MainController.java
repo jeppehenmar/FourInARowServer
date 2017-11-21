@@ -2,11 +2,13 @@ package controllers;
 
 import logic.PacketLogic;
 import logic.UserLogic;
+import models.Board;
 import models.User;
 import senders.Sender;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.List;
 
 /**
  * Created by jeppe on 21-11-2017.
@@ -30,5 +32,9 @@ public class MainController {
 
     public void reject(DatagramSocket socket, User user) {
         sender.reject(socket, user);
+    }
+
+    public void sendBoard(DatagramSocket socket, List<User> userList, Board board) {
+        sender.sendBoard(socket, userList, board);
     }
 }
