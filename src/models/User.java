@@ -3,7 +3,7 @@ package models;
 import java.net.InetAddress;
 
 /**
- * Created by jeppe on 21-11-2017.
+ * Created by Jeppe on 21-11-2017.
  */
 public class User {
     private String name;

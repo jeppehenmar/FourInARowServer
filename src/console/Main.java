@@ -32,10 +32,12 @@ public class Main {
                     case "JOIN":
                         System.out.println("Someone joined");
                         String username = msg.substring(5);
-                        userList.add(controller.createUser(received, username));
+                        User user = controller.createUser(received, username);
+                        userList.add(user);
                         for (User u : userList){
                             System.out.println(u.getName());
                         }
+                        controller.sendWelcome(socket, user);
                         //TODO: If 2 players in list, start game
                     case "MOVE":
                         //TODO: Do something with boardthing
