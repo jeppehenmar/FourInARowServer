@@ -2,6 +2,7 @@ package console;
 
 import controllers.MainController;
 import logic.PacketLogic;
+import models.Board;
 import models.User;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class Main {
     public static void main(String[] args) throws SocketException {
         final DatagramSocket socket = new DatagramSocket(4711);
         List<User> userList = new ArrayList<>();
+        Board board = new Board();
 
         MainController controller = new MainController();
 
@@ -30,14 +32,25 @@ public class Main {
 
                 switch (header){
                     case "JOIN":
-                        System.out.println("Someone joined");
                         String username = msg.substring(5);
                         User user = controller.createUser(received, username);
-                        userList.add(user);
-                        for (User u : userList){
-                            System.out.println(u.getName());
+                        if(userList.size()==2){
+                            controller.reject(socket, user);
+                            System.out.println(user.getName() + " tried connecting to server, but was rejected");
+                        } else{
+                            System.out.println(user.getName() + " connected");
+                            userList.add(user);
+                            for (User u : userList) {
+                                System.out.println(u.getName());
+                            }
+                            controller.sendWelcome(socket, user);
+                            if(userList.size()==2){
+                                board.resetBoard();
+                                System.out.println(board.printBoard());
+                                break;
+                            }
                         }
-                        controller.sendWelcome(socket, user);
+                        break;
                         //TODO: If 2 players in list, start game
                     case "MOVE":
                         //TODO: Do something with boardthing

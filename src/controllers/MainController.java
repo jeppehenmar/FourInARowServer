@@ -12,9 +12,9 @@ import java.net.DatagramSocket;
  * Created by jeppe on 21-11-2017.
  */
 public class MainController {
-    PacketLogic packetLogic = new PacketLogic();
-    UserLogic userLogic = new UserLogic();
-    Sender sender = new Sender();
+    private PacketLogic packetLogic = new PacketLogic();
+    private UserLogic userLogic = new UserLogic();
+    private Sender sender = new Sender();
 
     public String readMsg(DatagramPacket packet){
         return packetLogic.readMsg(packet);
@@ -28,4 +28,7 @@ public class MainController {
         sender.sendWelcome(socket, user);
     }
 
+    public void reject(DatagramSocket socket, User user) {
+        sender.reject(socket, user);
+    }
 }
