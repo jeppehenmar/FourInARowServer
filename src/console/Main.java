@@ -20,6 +20,7 @@ public class Main {
         final DatagramSocket socket = new DatagramSocket(4711);
         List<User> userList = new ArrayList<>();
         Board board = new Board();
+        int turnInt = 1;
 
         MainController controller = new MainController();
 
@@ -35,7 +36,7 @@ public class Main {
                         String username = msg.substring(5);
                         User user = controller.createUser(received, username);
                         if(userList.size()==2){
-                            controller.reject(socket, user);
+                            controller.sendMSG(socket, user, "You have been rejected, server is full");
                             System.out.println(user.getName() + " tried connecting to server, but was rejected");
                         } else{
                             System.out.println(user.getName() + " connected");
@@ -43,16 +44,23 @@ public class Main {
                             for (User u : userList) {
                                 System.out.println(u.getName());
                             }
-                            controller.sendWelcome(socket, user);
+                            controller.sendMSG(socket, user, "You have successfully connected to the server. Please wait while we find an opponent.");
                             if(userList.size()==2){
                                 board.resetBoard();
                                 System.out.println(board.printBoard());
-                                controller.sendBoard(socket, userList, board);
+                                for(int i = 0; i<userList.size(); i++){
+                                    controller.sendMSG(socket, userList.get(i), "You are Player"+(i+1)+" and this is your board:");
+                                    controller.sendBoard(socket, userList.get(i), board);
+                                    controller.sendMSG(socket, userList.get(i), "Player1 starts.");
+                                }
+                                controller.sendMSG(socket, userList.get(0), "Which column do you choose?");
+                                String turnIntAsString = Integer.toString(turnInt);
+                                controller.sendMSG(socket, userList.get(0), turnIntAsString);
+                                turnInt++;
                                 break;
                             }
                         }
                         break;
-                        //TODO: If 2 players in list, start game
                     case "MOVE":
                         //TODO: Do something with boardthing
                 }

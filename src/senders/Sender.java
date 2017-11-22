@@ -12,6 +12,10 @@ import java.util.List;
  * Created by Jeppe Henmar on 21-11-2017.
  */
 public class Sender {
+
+    /*
+        OUTDATED - USE sendMSG INSTEAD
+
     public void sendWelcome (DatagramSocket socket, User user){
         try{
             String welcomeMSG = "You have succesfully connected to the server. Please wait while we find an opponent";
@@ -24,6 +28,8 @@ public class Sender {
         }
     }
 
+        OUTDATED - USE sendMSG INSTEAD
+
     public void reject(DatagramSocket socket, User user) {
         try{
             String rejectMSG = "You have been rejected, server is full";
@@ -35,14 +41,46 @@ public class Sender {
             e.printStackTrace();
         }
     }
+    */
 
-    public void sendBoard(DatagramSocket socket, List<User> userList, Board board) {
+    public void sendBoardToPlayers(DatagramSocket socket, List<User> userList, Board board) {
         try{
-            String boardMSG = board.printBoard();
-            byte[] data = boardMSG.getBytes();
+            for(int i = 0; i<board.getRows(); i++){
+                String boardRow = "";
+                for(int j = 0; j<board.getColumns(); j++){
+                    boardRow+=board.getBoard()[i][j]+" ";
+                }
+                byte[] data = boardRow.getBytes();
+                for(User u : userList) {
+                    DatagramPacket packet = new DatagramPacket(data, data.length, u.getIp(), u.getPort());
+                    socket.send(packet);
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
-            for(User u : userList) {
-                DatagramPacket packet = new DatagramPacket(data, data.length, u.getIp(), u.getPort());
+    public void sendMSG(DatagramSocket socket, User user, String msg){
+        try{
+            byte[] data = msg.getBytes();
+
+            DatagramPacket packet = new DatagramPacket(data, data.length, user.getIp(), user.getPort());
+            socket.send(packet);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void sendBoard(DatagramSocket socket, User user, Board board) {
+        try{
+            for(int i = 0; i<board.getRows(); i++) {
+                String boardRow = "";
+                for (int j = 0; j < board.getColumns(); j++) {
+                    boardRow += board.getBoard()[i][j] + " ";
+                }
+                byte[] data = boardRow.getBytes();
+                DatagramPacket packet = new DatagramPacket(data, data.length, user.getIp(), user.getPort());
                 socket.send(packet);
             }
         }catch (IOException e){

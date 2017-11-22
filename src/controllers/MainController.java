@@ -25,7 +25,7 @@ public class MainController {
     public User createUser(DatagramPacket packet, String username){
         return userLogic.createUser(packet, username);
     }
-
+    /*
     public void sendWelcome(DatagramSocket socket, User user){
         sender.sendWelcome(socket, user);
     }
@@ -33,8 +33,17 @@ public class MainController {
     public void reject(DatagramSocket socket, User user) {
         sender.reject(socket, user);
     }
-
-    public void sendBoard(DatagramSocket socket, List<User> userList, Board board) {
-        sender.sendBoard(socket, userList, board);
+    */
+    public void sendBoardToPlayers(DatagramSocket socket, List<User> userList, Board board) {
+        sender.sendBoardToPlayers(socket, userList, board);
     }
+
+    public void sendMSG(DatagramSocket socket, User user, String msg) {
+        sender.sendMSG(socket, user, msg);
+    }
+
+    public void sendBoard(DatagramSocket socket, User user, Board board) {
+        sender.sendBoard(socket, user, board);
+    }
+
 }

@@ -30,4 +30,28 @@ public class Board {
         }
         return printBoard;
     }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public String[][] getBoard() {
+        return board;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public void setColumns(int columns) {
+        this.columns = columns;
+    }
+
+    public void setBoard(String[][] board) {
+        this.board = board;
+    }
 }
