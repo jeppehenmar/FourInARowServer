@@ -54,9 +54,9 @@ public class MainController {
         return boardLogic.updateBoard(moveString, board, turnInt);
     }
 
-    public boolean isWon(Board board, int turnInt) {
-        return boardLogic.isWon(board, turnInt);
-    }
+//  public boolean isWon(Board board, int turnInt) {
+//      return boardLogic.isWon(board, turnInt);
+//  }
 
     public void startGame(DatagramSocket socket, List<User> userList, Board board, MainController controller) {
         gameLogic.startGame(socket, userList, board, controller);
