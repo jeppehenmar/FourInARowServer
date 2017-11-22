@@ -9,7 +9,7 @@ public class Board {
     private String[][] board;
 
     public Board() {
-        this.board = new String[6][7];
+        this.board = new String[rows][columns];
     }
 
     public void resetBoard(){

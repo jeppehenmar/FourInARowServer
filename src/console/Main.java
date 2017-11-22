@@ -46,23 +46,40 @@ public class Main {
                             }
                             controller.sendMSG(socket, user, "You have successfully connected to the server. Please wait while we find an opponent.");
                             if(userList.size()==2){
-                                board.resetBoard();
-                                System.out.println(board.printBoard());
-                                for(int i = 0; i<userList.size(); i++){
-                                    controller.sendMSG(socket, userList.get(i), "You are Player"+(i+1)+" and this is your board:");
-                                    controller.sendBoard(socket, userList.get(i), board);
-                                    controller.sendMSG(socket, userList.get(i), "Player1 starts.");
-                                }
+                                controller.startGame(socket, userList, board, controller);
                                 controller.sendMSG(socket, userList.get(0), "Which column do you choose?");
                                 String turnIntAsString = Integer.toString(turnInt);
                                 controller.sendMSG(socket, userList.get(0), turnIntAsString);
-                                turnInt++;
                                 break;
                             }
                         }
                         break;
                     case "MOVE":
-                        //TODO: Do something with boardthing
+                        String moveString = msg.substring(5, 6);
+                        System.out.println("Player"+turnInt+" has chosen column "+moveString);
+                        board = controller.updateBoard(moveString, board, turnInt);
+                        boolean won = false;
+                        //won = controller.isWon(board, turnInt); //TODO: make this method
+
+                        if(won){
+                            board.resetBoard();
+                            controller.startGame(socket, userList, board, controller);
+                            break;
+                        }
+
+                        if(turnInt==1){
+                            turnInt++;
+                        } else if(turnInt==2){
+                            turnInt--;
+                        }
+
+                        controller.sendBoardToPlayers(socket, userList, board);
+                        controller.sendMSG(socket, userList.get(turnInt-1), "Which column do you choose?");
+                        String turnIntAsString = Integer.toString(turnInt);
+                        controller.sendMSG(socket, userList.get(turnInt-1), turnIntAsString);
+                        break;
+                    case "EXIT":
+                        System.exit(0);
                 }
 
             }catch (IOException e){

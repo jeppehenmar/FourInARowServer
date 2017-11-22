@@ -1,5 +1,7 @@
 package controllers;
 
+import logic.BoardLogic;
+import logic.GameLogic;
 import logic.PacketLogic;
 import logic.UserLogic;
 import models.Board;
@@ -16,6 +18,8 @@ import java.util.List;
 public class MainController {
     private PacketLogic packetLogic = new PacketLogic();
     private UserLogic userLogic = new UserLogic();
+    private BoardLogic boardLogic = new BoardLogic();
+    private GameLogic gameLogic = new GameLogic();
     private Sender sender = new Sender();
 
     public String readMsg(DatagramPacket packet){
@@ -46,4 +50,15 @@ public class MainController {
         sender.sendBoard(socket, user, board);
     }
 
+    public Board updateBoard(String moveString, Board board, int turnInt) {
+        return boardLogic.updateBoard(moveString, board, turnInt);
+    }
+
+    public boolean isWon(Board board, int turnInt) {
+        return boardLogic.isWon(board, turnInt);
+    }
+
+    public void startGame(DatagramSocket socket, List<User> userList, Board board, MainController controller) {
+        gameLogic.startGame(socket, userList, board, controller);
+    }
 }
