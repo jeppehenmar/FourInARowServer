@@ -80,6 +80,10 @@ public class Main {
                         break;
                     case "EXIT":
                         System.exit(0);
+                        break;
+                    case "GAME":
+                        controller.startGame(socket, userList, board, controller);
+                        break;
                 }
 
             }catch (IOException e){

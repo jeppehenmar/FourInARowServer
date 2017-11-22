@@ -14,6 +14,8 @@ public class GameLogic {
     public void startGame(DatagramSocket socket, List<User> userList, Board board, MainController controller) {
         board.resetBoard();
         System.out.println(board.printBoard());
+        controller.sendMSG(socket, userList.get(0), "You are playing "+userList.get(1).getName());
+        controller.sendMSG(socket, userList.get(1), "You are playing "+userList.get(0).getName());
         for(int i = 0; i<userList.size(); i++){
             controller.sendMSG(socket, userList.get(i), "You are Player"+(i+1)+" and this is your board:");
             controller.sendBoard(socket, userList.get(i), board);
