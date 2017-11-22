@@ -62,7 +62,6 @@ public class Main {
                         //won = controller.isWon(board, turnInt); //TODO: make this method
 
                         if(won){
-                            board.resetBoard();
                             controller.startGame(socket, userList, board, controller);
                             break;
                         }
@@ -74,11 +73,19 @@ public class Main {
                         }
 
                         controller.sendBoardToPlayers(socket, userList, board);
-                        controller.sendMSG(socket, userList.get(turnInt-1), "Which column do you choose?");
+                        controller.sendMSG(socket, userList.get(turnInt-1), "Your turn. Which column do you choose?");
+                        if(turnInt==2){
+                            controller.sendMSG(socket, userList.get(turnInt-2), "It is "+userList.get(turnInt-1).getName()+"'s turn.");
+                        } else if(turnInt==1){
+                            controller.sendMSG(socket, userList.get(turnInt), "It is "+userList.get(turnInt-1).getName()+"'s turn.");
+                        }
                         String turnIntAsString = Integer.toString(turnInt);
                         controller.sendMSG(socket, userList.get(turnInt-1), turnIntAsString);
                         break;
                     case "EXIT":
+                        for(User u : userList){
+                            controller.sendMSG(socket, u, "Game has ended");
+                        }
                         System.exit(0);
                         break;
                     case "GAME":
